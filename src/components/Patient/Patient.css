@@ -1,0 +1,16 @@
+.patient {
+  padding-top: 50px;
+}
+
+.patient .MuiSvgIcon-root {
+  width: 3rem;
+  height: 3rem;
+}
+
+.patient .MuiBottomNavigationAction-root {
+  max-width: 250px !important;
+}
+
+.patient .MuiButtonBase-root.MuiBottomNavigationAction-root.Mui-selected {
+  border-top: 3px solid #3f51b5;
+}

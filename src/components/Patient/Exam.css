@@ -1,0 +1,67 @@
+.exam {
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.exam__emptyIcon {
+  height: 250px;
+  object-fit: contain;
+}
+
+.exam__empty {
+  padding-top: 50px;
+}
+
+.exam__empty h5 {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.exam__lists {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.exam__addResultIcon {
+  height: 25px !important;
+}
+
+.exam__addButton {
+  margin-top: 20px !important;
+}
+
+.MuiButton-startIcon {
+  font-size: 5px !important;
+}
+
+.makeStyles-paper-2:focus,
+.makeStyles-paper-3:focus {
+  outline: 0 !important;
+}
+
+.exam__list {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-size: 18px !important;
+}
+
+.exam__list:nth-child(even) {
+  background-color: #eeeeee !important;
+}
+
+.exam__listIcon {
+  color: #3f50b5;
+  font-size: 30px !important;
+}
+
+.exam__cancelIcon {
+  color: #212121;
+  font-size: 30px !important;
+}
+
+.exam__iconButton {
+  padding: 5px !important;
+}
