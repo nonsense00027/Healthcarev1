@@ -1,0 +1,11 @@
+.personal {
+  padding: 20px 0;
+}
+.personal > div {
+  display: flex;
+  padding: 10px;
+}
+
+.personal .MuiTextField-root {
+  margin: 0 10px !important;
+}

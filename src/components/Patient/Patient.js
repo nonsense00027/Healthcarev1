@@ -3,6 +3,7 @@ import "./Patient.css";
 import {
   BottomNavigation,
   BottomNavigationAction,
+  CircularProgress,
   Container,
   useTheme,
 } from "@material-ui/core";
@@ -12,12 +13,13 @@ import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import { makeStyles } from "@material-ui/core/styles";
 import { useParams } from "react-router-dom";
 import { db } from "../../firebase";
-import Personal from "./Personal";
-import Exam from "./Exam";
+import { Personal } from "./Personal";
+import { Exam } from "./Exam";
 import Result from "./Result";
 import SwipeableViews from "react-swipeable-views";
 import { useStateValue } from "../../DataLayer";
 import { types } from "../../Reducer";
+import { collectIdsAndDocs } from "../../utilities";
 
 const useStyles = makeStyles({
   root: {
@@ -38,6 +40,7 @@ function Patient() {
   const { patientId } = useParams();
   const [patient, setPatient] = useState();
   const [, dispatch] = useStateValue();
+  const [examsToTake, setExamsToTake] = useState([]);
 
   useEffect(() => {
     db.collection("patients")
@@ -56,7 +59,15 @@ function Patient() {
     });
   }, [dispatch]);
 
-  console.log(patient);
+  useEffect(() => {
+    db.collection("patients")
+      .doc(patientId)
+      .collection("exams")
+      .where("status", "==", false)
+      .onSnapshot((snapshot) => {
+        setExamsToTake(snapshot.docs.map((doc) => collectIdsAndDocs(doc)));
+      });
+  }, [patientId]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -88,21 +99,28 @@ function Patient() {
             icon={<AssignmentTurnedInIcon />}
           />
         </BottomNavigation>
-
-        {/* {value === 0 && <Personal />}
-        {value === 1 && <Exam />}
-        {value === 2 && <Result />} */}
-
         <SwipeableViews
           axis={theme.direction === "rtl" ? "x-reverse" : "x"}
           index={value}
           onChangeIndex={handleChangeIndex}
         >
           <div value={value} index={0} dir={theme.direction}>
-            <Personal />
+            {patient ? (
+              <Personal patient={patient} />
+            ) : (
+              <div className="patient__loading">
+                <CircularProgress />
+              </div>
+            )}
           </div>
           <div value={value} index={1} dir={theme.direction}>
-            <Exam />
+            {examsToTake ? (
+              <Exam examsToTake={examsToTake} />
+            ) : (
+              <div className="patient__loading">
+                <CircularProgress />
+              </div>
+            )}
           </div>
           <div value={value} index={2} dir={theme.direction}>
             <Result />

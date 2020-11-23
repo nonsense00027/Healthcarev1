@@ -36,11 +36,6 @@
   font-size: 5px !important;
 }
 
-.makeStyles-paper-2:focus,
-.makeStyles-paper-3:focus {
-  outline: 0 !important;
-}
-
 .exam__list {
   display: flex !important;
   justify-content: space-between !important;
@@ -64,4 +59,8 @@
 
 .exam__iconButton {
   padding: 5px !important;
+}
+
+.exam__modal:focus {
+  outline: 0 !important;
 }
