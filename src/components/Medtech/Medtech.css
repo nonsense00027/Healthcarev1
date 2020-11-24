@@ -1,0 +1,13 @@
+.medtech {
+  padding-top: 50px;
+  width: 100%;
+}
+.medtech__patientId {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  margin-bottom: 30px;
+}
+.medtech .MuiTextField-root {
+  min-width: 350px;
+}

@@ -3,6 +3,7 @@
   height: 100%;
   position: relative;
   padding-top: 80px;
+  padding-bottom: 50px;
 }
 
 .home__addPatient {
@@ -31,6 +32,6 @@
   margin-top: 10px !important;
 }
 
-.makeStyles-paper-1:focus {
+.home__modal:focus {
   outline: 0 !important;
 }

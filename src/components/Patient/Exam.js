@@ -2,20 +2,12 @@ import React, { useState, memo } from "react";
 import "./Exam.css";
 import { useParams } from "react-router-dom";
 import empty from "../../img/empty.svg";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  List,
-  Modal,
-  Typography,
-} from "@material-ui/core";
+import { Button, List, Modal } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import SendIcon from "@material-ui/icons/Send";
 import { makeStyles } from "@material-ui/core/styles";
 import { useStateValue } from "../../DataLayer";
 import { ExamsLists } from "./ExamsLists";
+import { ExamsToTake } from "./ExamsToTake";
 
 function getModalStyle() {
   const top = 50;
@@ -82,26 +74,7 @@ export const Exam = memo(({ examsToTake }) => {
           </center>
         </div>
       ) : (
-        <div className="exam__lists">
-          {examsToTake.map((exam) => (
-            <Card className={classes.root} key={exam.id}>
-              <CardContent>
-                <Typography variant="h6" component="h2">
-                  {exam.name}
-                </Typography>
-                <Typography variant="body2" component="p">
-                  Dr. Michael L. Tan
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">
-                  Add Result
-                  <SendIcon className="exam__addResultIcon" />
-                </Button>
-              </CardActions>
-            </Card>
-          ))}
-        </div>
+        <ExamsToTake examsToTake={examsToTake} />
       )}
       <Button
         variant="contained"
@@ -129,8 +102,9 @@ export const Exam = memo(({ examsToTake }) => {
           </List>
           <Button
             variant="contained"
-            color="default"
+            color="primary"
             fullWidth
+            className="exam__doneButton"
             onClick={handleClose}
           >
             Done

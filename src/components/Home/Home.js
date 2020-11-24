@@ -120,7 +120,7 @@ function Home() {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div style={modalStyle} className={classes.paper}>
+        <div style={modalStyle} className={`${classes.paper} home__modal`}>
           <center>
             <h2 className="home__formHeader">Patients Information</h2>
           </center>
