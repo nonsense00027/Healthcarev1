@@ -3,11 +3,14 @@ import "./Login.css";
 import login from "../../img/login.svg";
 import { Button, TextField } from "@material-ui/core";
 import { auth } from "../../firebase";
+import { useHistory } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const history = useHistory();
+
   const handleError = (code) => {
     switch (code) {
       case "auth/user-not-found":
@@ -22,6 +25,7 @@ function Login() {
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(email, password)
+      .then(history.push("/"))
       .catch((err) => handleError(err.code));
   };
   return (

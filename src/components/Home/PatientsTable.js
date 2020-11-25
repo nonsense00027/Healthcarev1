@@ -97,6 +97,7 @@ function PatientsTable() {
     });
   }, []);
 
+  console.log("HISTORY", history);
   return (
     <div className="patientsTable">
       <center>
