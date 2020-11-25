@@ -1,0 +1,39 @@
+.login {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.login__img {
+  height: 50%;
+  object-fit: contain;
+}
+
+.login__content {
+  padding: 50px;
+  background-color: #f6f6f6;
+  min-width: 400px;
+}
+
+.login__content h5 {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.login__content .MuiButton-root {
+  margin-top: 10px !important;
+}
+
+.login__form {
+  margin-top: 30px;
+}
+
+.login__form > div {
+  margin-bottom: 10px;
+}
+
+.login__error {
+  font-size: 14px;
+  color: red;
+}

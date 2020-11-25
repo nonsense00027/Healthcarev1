@@ -3,6 +3,7 @@ import reducer from "./Reducer";
 // import { saveToCart } from "./Reducer";
 
 const initialState = {
+  user: null,
   patients: [],
   exams: [],
 };
