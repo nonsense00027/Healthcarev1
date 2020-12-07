@@ -1,0 +1,23 @@
+.sidebar {
+  width: 300px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-right: 1px solid lightgray;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0;
+}
+
+.sidebar__avatar {
+  width: 120px !important;
+  height: 120px !important;
+  margin-bottom: 10px !important;
+}
+
+.admin__info {
+  display: grid;
+  place-items: center;
+  margin-bottom: 50px;
+}

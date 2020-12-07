@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "./PatientsTable.css";
+import React, { useState, useEffect } from "react";
+import "./UserTable.css";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   IconButton,
@@ -14,16 +14,15 @@ import {
   withStyles,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import { useStateValue } from "../../DataLayer";
+import { db } from "../../firebase";
+import { types } from "../../Reducer";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 
 const columns = [
   { id: "lastname", label: "Last Name", minWidth: 120 },
   { id: "firstname", label: "First Name", minWidth: 120 },
-  {
-    id: "age",
-    label: "Age",
-    minWidth: 50,
-  },
+
   {
     id: "contact",
     label: "Contact No.",
@@ -33,6 +32,11 @@ const columns = [
     id: "address",
     label: "Address",
     minWidth: 170,
+  },
+  {
+    id: "role",
+    label: "Role",
+    minWidth: 50,
   },
 ];
 
@@ -58,17 +62,17 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useStyles = makeStyles({
   root: {
-    width: "100%",
+    width: "90%",
   },
   container: {
     maxHeight: 1000,
   },
 });
 
-function PatientsTable({ patients }) {
+function UserTable({ users }) {
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const history = useHistory();
 
   const handleChangePage = (event, newPage) => {
@@ -81,15 +85,11 @@ function PatientsTable({ patients }) {
   };
 
   const handleClick = (id) => {
-    history.push(`/patients/${id}`);
+    history.push(`/users/${id}`);
   };
 
-  console.log("HISTORY", history);
   return (
-    <div className="patientsTable">
-      <center>
-        <h1 className="patientsTable__title">Patients Record</h1>
-      </center>
+    <div className="userTable">
       <Paper className={classes.root}>
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
@@ -110,7 +110,7 @@ function PatientsTable({ patients }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {patients
+              {users
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -142,9 +142,9 @@ function PatientsTable({ patients }) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 15, 25]}
+          rowsPerPageOptions={[5, 10, 20]}
           component="div"
-          count={patients.length}
+          count={users.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
@@ -155,4 +155,4 @@ function PatientsTable({ patients }) {
   );
 }
 
-export default PatientsTable;
+export default UserTable;

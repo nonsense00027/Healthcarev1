@@ -9,9 +9,12 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { auth } from "../firebase";
+import { useStateValue } from "../DataLayer";
 
 function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [{ user }] = useStateValue();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,6 +27,8 @@ function Header() {
     setAnchorEl(null);
     auth.signOut();
   };
+
+  console.log("header user", user);
 
   return (
     <div className="header">

@@ -52,7 +52,7 @@ export const Exam = memo(({ examsToTake }) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
-  const [{ exams }, dispatch] = useStateValue();
+  const [{ user, exams }, dispatch] = useStateValue();
 
   const handleOpen = () => {
     setOpen(true);
@@ -76,15 +76,17 @@ export const Exam = memo(({ examsToTake }) => {
       ) : (
         <ExamsToTake examsToTake={examsToTake} />
       )}
-      <Button
-        variant="contained"
-        color="default"
-        startIcon={<AddCircleIcon />}
-        className="exam__addButton"
-        onClick={handleOpen}
-      >
-        Add/Remove Test
-      </Button>
+      {user.role === "Doctor" && (
+        <Button
+          variant="contained"
+          color="default"
+          startIcon={<AddCircleIcon />}
+          className="exam__addButton"
+          onClick={handleOpen}
+        >
+          Add/Remove Test
+        </Button>
+      )}
 
       <Modal
         open={open}

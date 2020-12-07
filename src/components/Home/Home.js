@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Home.css";
 import PatientsTable from "./PatientsTable";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import SaveIcon from "@material-ui/icons/Save";
-import { Button, Modal, Snackbar, TextField, Tooltip } from "@material-ui/core";
+import {
+  Button,
+  MenuItem,
+  Modal,
+  Select,
+  Snackbar,
+  TextField,
+  Tooltip,
+} from "@material-ui/core";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { db } from "../../firebase";
 import MuiAlert from "@material-ui/lab/Alert";
+import { useStateValue } from "../../DataLayer";
+import { useHistory } from "react-router-dom";
+import { collectIdsAndDocs } from "../../utilities";
+import { types } from "../../Reducer";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -38,8 +50,9 @@ function Home() {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
-
+  const [{ user, patients }, dispatch] = useStateValue();
   const [firstname, setFirstname] = useState("");
+  const history = useHistory();
   const [lastname, setLastname] = useState("");
   const [age, setAge] = useState(1);
   const [contact, setContact] = useState("");
@@ -49,8 +62,11 @@ function Home() {
   const [electrolytes, setElectrolytes] = useState("");
   const [bloodpressure, setBloodpressure] = useState("");
   const [temperature, setTemperature] = useState("");
+  const [doctor, setDoctor] = useState("");
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const [doctors, setDoctors] = useState([]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -71,6 +87,7 @@ function Home() {
     setTemperature("");
     setCbc("");
     setElectrolytes("");
+    setDoctor("");
   };
 
   const handleSubmit = (e) => {
@@ -87,6 +104,7 @@ function Home() {
         bloodpressure,
         electrolytes,
         temperature,
+        doctor,
         details,
       })
       .then((res) => {
@@ -98,10 +116,45 @@ function Home() {
       .catch((err) => alert(err.message));
   };
 
+  const filterPatients = (patients) => {
+    var newPatients;
+    if (user.role === "Doctor") {
+      newPatients = patients.filter((patient) => patient.doctor === user.id);
+    } else {
+      newPatients = patients;
+    }
+    return newPatients;
+  };
+
+  useEffect(() => {
+    db.collection("users")
+      .where("role", "==", "Doctor")
+      .onSnapshot((snapshot) => {
+        setDoctors(snapshot.docs.map((doc) => collectIdsAndDocs(doc)));
+      });
+  }, []);
+
+  useEffect(() => {
+    db.collection("patients").onSnapshot((snapshot) => {
+      dispatch({
+        type: types.GET_PATIENTS,
+        payload: snapshot.docs,
+      });
+    });
+  }, [dispatch]);
+
+  if (user.role === "Admin") {
+    history.push("/admin");
+  }
+
+  if (user.role === "Medtech") {
+    history.push("/medtech");
+  }
+
   return (
     <div className="home">
       <Container>
-        <PatientsTable />
+        <PatientsTable patients={filterPatients(patients)} />
         <Tooltip title="Add Patient" aria-label="add" arrow>
           <Fab
             color="primary"
@@ -194,6 +247,26 @@ function Home() {
                 value={electrolytes}
                 onChange={(e) => setElectrolytes(e.target.value)}
               />
+            </div>
+            <div>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={doctor}
+                onChange={(e) => setDoctor(e.target.value)}
+                fullWidth
+                displayEmpty
+                required
+              >
+                <MenuItem value="" disabled>
+                  Assign Doctor
+                </MenuItem>
+                {doctors.map((doctor) => (
+                  <MenuItem key={doctor.id} value={doctor.id}>
+                    {doctor.lastname}, {doctor.firstname}
+                  </MenuItem>
+                ))}
+              </Select>
             </div>
             <div>
               <TextField

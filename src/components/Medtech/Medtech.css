@@ -11,3 +11,12 @@
 .medtech .MuiTextField-root {
   min-width: 350px;
 }
+
+.medtech__info {
+  padding-left: 25px;
+  margin-bottom: 20px;
+}
+
+.medtech__info h3 {
+  margin-bottom: 10px;
+}
