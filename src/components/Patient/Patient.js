@@ -19,7 +19,6 @@ import Result from "./Result";
 import SwipeableViews from "react-swipeable-views";
 import { useStateValue } from "../../DataLayer";
 import { types } from "../../Reducer";
-import { collectIdsAndDocs } from "../../utilities";
 
 const useStyles = makeStyles({
   root: {
@@ -30,6 +29,7 @@ const useStyles = makeStyles({
     left: 0,
     fontSize: 20,
     height: 80,
+    zIndex: 999,
   },
 });
 
@@ -41,32 +41,72 @@ function Patient() {
   const [patient, setPatient] = useState();
   const [, dispatch] = useStateValue();
   const [examsToTake, setExamsToTake] = useState([]);
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
-    db.collection("patients")
+    const unsubscribe = db
+      .collection("patients")
       .doc(patientId)
       .onSnapshot((snapshot) => {
         setPatient(snapshot.data());
       });
+
+    return () => {
+      unsubscribe();
+    };
   }, [patientId]);
 
   useEffect(() => {
-    db.collection("exams").onSnapshot((snapshot) => {
+    const unsubscribe = db.collection("exams").onSnapshot((snapshot) => {
       dispatch({
         type: types.GET_EXAMS,
         payload: snapshot.docs,
       });
+
+      return () => {
+        unsubscribe();
+      };
     });
   }, [dispatch]);
 
   useEffect(() => {
-    db.collection("patients")
+    const unsubscribe = db
+      .collection("patients")
       .doc(patientId)
       .collection("exams")
-      .where("status", "==", false)
       .onSnapshot((snapshot) => {
-        setExamsToTake(snapshot.docs.map((doc) => collectIdsAndDocs(doc)));
+        setExamsToTake(
+          snapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+            patientId: patientId,
+          }))
+        );
       });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [patientId]);
+
+  useEffect(() => {
+    const unsubscribe = db
+      .collection("patients")
+      .doc(patientId)
+      .collection("results")
+      .onSnapshot((snapshot) => {
+        setResults(
+          snapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+            patientId: patientId,
+          }))
+        );
+      });
+
+    return () => {
+      unsubscribe();
+    };
   }, [patientId]);
 
   const handleChange = (event, newValue) => {
@@ -76,6 +116,8 @@ function Patient() {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+
+  console.log("RESULTS", results);
 
   return (
     <div className="patient">
@@ -123,7 +165,7 @@ function Patient() {
             )}
           </div>
           <div value={value} index={2} dir={theme.direction}>
-            <Result />
+            <Result results={results} />
           </div>
         </SwipeableViews>
       </Container>

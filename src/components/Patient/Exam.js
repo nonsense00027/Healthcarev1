@@ -2,12 +2,17 @@ import React, { useState, memo } from "react";
 import "./Exam.css";
 import { useParams } from "react-router-dom";
 import empty from "../../img/empty.svg";
-import { Button, List, Modal } from "@material-ui/core";
+import { Button, List, Modal, Snackbar } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { makeStyles } from "@material-ui/core/styles";
 import { useStateValue } from "../../DataLayer";
 import { ExamsLists } from "./ExamsLists";
 import { ExamsToTake } from "./ExamsToTake";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function getModalStyle() {
   const top = 50;
@@ -52,8 +57,13 @@ export const Exam = memo(({ examsToTake }) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(true);
+
   const [{ user, exams }, dispatch] = useStateValue();
 
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
   const handleOpen = () => {
     setOpen(true);
   };
@@ -74,7 +84,11 @@ export const Exam = memo(({ examsToTake }) => {
           </center>
         </div>
       ) : (
-        <ExamsToTake examsToTake={examsToTake} />
+        <ExamsToTake
+          examsToTake={examsToTake}
+          handleSnackbarOpen={handleSnackbarOpen}
+        />
+        // <div></div>
       )}
       {user.role === "Doctor" && (
         <Button

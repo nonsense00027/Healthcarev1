@@ -68,3 +68,13 @@
 .exam__doneButton {
   margin-top: 10px !important;
 }
+
+.exam .MuiSvgIcon-root {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.exam .MuiSnackbar-root {
+  position: fixed;
+  bottom: 0;
+}

@@ -18,26 +18,43 @@ function Medtech() {
     e.preventDefault();
     db.collection("patients")
       .doc(patientId)
-      .collection("exams")
-      // .where("status", "==", false)
       .get()
       .then((result) => {
-        setExamsToTake(result.docs.map((doc) => collectIdsAndDocs(doc)));
-      })
-      .catch((err) => console.log(err.message));
+        console.log("USER", result);
+        if (result.exists) {
+          history.push(`/patients/${patientId}`);
+        } else {
+          alert("Patient not found");
+        }
+      });
 
-    db.collection("patients")
-      .doc(patientId)
-      // .where("status", "==", false)
-      .get()
-      .then((doc) => {
-        setPatient(collectIdsAndDocs(doc));
-      })
-      .catch((err) => console.log(err.message));
+    //   db.collection("patients")
+    //     .doc(patientId)
+    //     .collection("exams")
+    //     .where("status", "==", false)
+    //     .get()
+    //     .then((result) => {
+    //       setExamsToTake(
+    //         result.docs.map((doc) => ({
+    //           ...doc.data(),
+    //           id: doc.id,
+    //           patientId: patientId,
+    //         }))
+    //       );
+    //     })
+    //     .catch((err) => console.log(err.message));
+
+    //   db.collection("patients")
+    //     .doc(patientId)
+    //     .get()
+    //     .then((doc) => {
+    //       setPatient(collectIdsAndDocs(doc));
+    //     })
+    //     .catch((err) => console.log(err.message));
   };
 
   if (user.role === "Admin") {
-    history.push("/admin");
+    history.pus("/admin");
   }
   console.log("patient", patient);
 
@@ -56,7 +73,7 @@ function Medtech() {
           </form>
         </div>
 
-        <div className="medtech__info">
+        {/* <div className="medtech__info">
           <h3>Patient Information</h3>
           <p>
             <strong>Name:</strong> {patient?.lastname}, {patient?.firstname}
@@ -70,8 +87,8 @@ function Medtech() {
           <p>
             <strong>Details:</strong> {patient?.detail}
           </p>
-        </div>
-        <ExamsToTake examsToTake={examsToTake} />
+        </div> */}
+        {/* <ExamsToTake examsToTake={examsToTake} /> */}
       </Container>
     </div>
   );

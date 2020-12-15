@@ -9,6 +9,7 @@ import React from "react";
 import "./Sidebar.css";
 import InboxIcon from "@material-ui/icons/Inbox";
 import { useStateValue } from "../../DataLayer";
+import { auth } from "../../firebase";
 
 function Sidebar() {
   const [{ user }, dispatch] = useStateValue();
@@ -36,7 +37,7 @@ function Sidebar() {
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary="Logout" />
+          <ListItemText primary="Logout" onClick={() => auth.signOut()} />
         </ListItem>
       </List>
     </div>

@@ -3,12 +3,14 @@ import { IconButton, ListItem } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import { db } from "../../firebase";
+import { useStateValue } from "../../DataLayer";
 
 export const ExamsLists = ({ exams, patientId, examsToTake }) => {
+  const [{ user }] = useStateValue();
   const handleAdd = (data) => {
     const newExam = {
       name: data.name,
-      status: false,
+      doctor: user,
     };
     db.collection("patients")
       .doc(patientId)
