@@ -31,5 +31,7 @@ alexanicolepassword
 stephanie@gmail.com
 stephaniepassword
 
+PS: for the medtech part, you can use the patient id seen on the URL when your login as nurse or doctor
+
 xyla@gmail.com
 xylapassword
