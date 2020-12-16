@@ -6,9 +6,9 @@ Each user has it's own functionalities
 # How to use?
 ## There are 4 types of user:
 
-1. Admin - can add users
+1. Admin - can add users, remove users, add exams, remove exams
 2. Nurse -  can view all patients, add patient, view details
-3. Doctor = can view assigned patients, request patients' exam/test
+3. Doctor = can view assigned patients, request patients' exam/test, can view assigned patients details
 4. Medtech - can add exams/tests results
 
 ## Sample users:
